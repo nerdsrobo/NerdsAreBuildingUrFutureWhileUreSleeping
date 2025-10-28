@@ -9,7 +9,5 @@ abstract class WheelbaseSuper4Wheel(P: RobotPack) : Module(P) {
     val RB = P.hwmp.get(DcMotor::class.java, "RB");
     val LF = P.hwmp.get(DcMotor::class.java, "LF");
     val LB = P.hwmp.get(DcMotor::class.java, "LB");
-    override fun initModule() {
 
-    }
 }
