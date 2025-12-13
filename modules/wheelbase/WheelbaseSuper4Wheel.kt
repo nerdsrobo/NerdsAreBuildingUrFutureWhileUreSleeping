@@ -10,4 +10,11 @@ abstract class WheelbaseSuper4Wheel(P: RobotPack) : Module(P) {
     val LF = P.hwmp.get(DcMotor::class.java, "LF");
     val LB = P.hwmp.get(DcMotor::class.java, "LB");
 
+    init {
+        RF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
+        RB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
+        LF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
+        LB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
+    }
+
 }

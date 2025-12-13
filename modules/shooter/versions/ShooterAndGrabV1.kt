@@ -1,22 +1,22 @@
 package org.firstinspires.ftc.teamcode.modules.shooter.versions
 
-import com.acmerobotics.dashboard.config.Config
 import org.firstinspires.ftc.teamcode.modules.shooter.ShooterAndGrab
 import org.firstinspires.ftc.teamcode.modules.superclasses.RobotPack
 
-@Config
 class ShooterAndGrabV1(P: RobotPack) : ShooterAndGrab(P) {
-    fun setMtPower(pw: Double) {
+    fun setMtPowerGrab(pw: Double) {
         LG.power = pw*kLG;
         RG.power = pw*kRG;
+    }
+    fun setMtPowerConv(pw: Double) {
         LC.power = pw*kLC;
         RC.power = pw*kRC;
     }
 
     companion object {
-        const val kRC = -1;
-        const val kLC = 1;
-        const val kRG = -1;
-        const val kLG = 1;
+        const val kRC = -1*.5*-1;
+        const val kLC = 1*.5*-1;
+        const val kRG = -1*-1;
+        const val kLG = 1*-1;
     }
 }

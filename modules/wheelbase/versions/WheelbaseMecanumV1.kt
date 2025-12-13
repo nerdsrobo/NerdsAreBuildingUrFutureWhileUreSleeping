@@ -11,9 +11,11 @@ class WheelbaseMecanumV1(P: RobotPack) : WheelbaseSuper4Wheel(P) {
         LF.power = lf;
     }
     fun setAxisPower(pwX: Double, pwY: Double, pwRot: Double) {
-        setMtPower(pwX + pwY + pwRot,
-            pwX - pwY + pwRot,
-            -pwX + pwY + pwRot,
-            -pwX - pwY + pwRot);
+        setMtPower(
+            pwX + pwY - pwRot,
+            -pwX + pwY - pwRot,
+            -pwX - pwY - pwRot,
+            pwX - pwY - pwRot
+        );
     }
 }

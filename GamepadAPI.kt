@@ -4,7 +4,7 @@ open class GamepadAPI {
     var state = "default";
     var onStateHandlersStates: ArrayList<String> = arrayListOf();
     var onStateHandlersFuncs: ArrayList<() -> Unit> = arrayListOf();
-    fun setState(state: String) {
+    fun setState_(state: String) {
         this.state = state;
         for ( i in onStateHandlersStates.indices ) {
             if ( state == onStateHandlersStates[i] ) {
@@ -40,18 +40,18 @@ open class GamepadAPI {
             }
         }
     }
-    fun bind(condition: () -> Boolean, button: () -> Boolean, func: () -> Unit) {
+    fun bindVoid(condition: () -> Boolean, button: () -> Boolean, func: () -> Unit) {
         voidLambdaHandlersCondition.add(condition);
         voidLambdaHandlersConditionButton.add(button);
         voidLambdaHandlersFuncs.add(func);
     }
-    fun bind(condition: () -> Boolean, button: () -> Boolean, doubleGetter: () -> Double, func: (Double) -> Unit) {
+    fun bindDouble(condition: () -> Boolean, button: () -> Boolean, doubleGetter: () -> Double, func: (Double) -> Unit) {
         doubleLambdaHandlersCondition.add(condition);
         doubleLambdaHandlersConditionButton.add(button);
         doubleLambdaHandlersDoubleGetter.add(doubleGetter);
         doubleLambdaHandlersFuncs.add(func);
     }
-    fun bind(condition: () -> Boolean, button: () -> Boolean, arrayGetter: () -> Array<Double>, func: (Array<Double>) -> Unit) {
+    fun bindArray(condition: () -> Boolean, button: () -> Boolean, arrayGetter: () -> Array<Double>, func: (Array<Double>) -> Unit) {
         arrayDoubleLambdaHandlersCondition.add(condition);
         arrayDoubleLambdaHandlersConditionButton.add(button);
         arrayDoubleLambdaHandlersArrayGetter.add(arrayGetter);
