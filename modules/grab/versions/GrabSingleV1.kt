@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.modules.shooter.ShooterAndGrab
 import org.firstinspires.ftc.teamcode.modules.superclasses.RobotPack
 
 class GrabSingleV1(P: RobotPack) : GrabSingle(P) {
-    fun setMtPowerServos(pw: Double) {
+    fun setMtPower(pw: Double) {
         GRB.power = pw*kGRB;
     }
 

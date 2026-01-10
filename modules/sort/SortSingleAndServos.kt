@@ -9,5 +9,5 @@ abstract class SortSingleAndServos(P: RobotPack) : Module(P) {
     val SRT = P.hwmp.get(DcMotor::class.java, "SRT");
     val TLK_L = P.hwmp.get(Servo::class.java, "TLK_L");
     val TLK_R = P.hwmp.get(Servo::class.java, "TLK_R")
-    val HLD = P.hwmp.get(Servo::class.java, "HLD")
+    //val HLD = P.hwmp.get(Servo::class.java, "HLD")
 }
