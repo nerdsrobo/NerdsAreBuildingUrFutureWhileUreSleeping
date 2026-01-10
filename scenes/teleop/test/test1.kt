@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.modules.lift.versions.TwoMotorLiftV1
 import org.firstinspires.ftc.teamcode.modules.shooter.versions.ShooterAndGrabV1
 import org.firstinspires.ftc.teamcode.modules.shooter.versions.ShooterSingleMotorV1
+import org.firstinspires.ftc.teamcode.modules.shooter.versions.ShooterVertV1
 import org.firstinspires.ftc.teamcode.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.modules.wheelbase.versions.WheelbaseMecanumV1
 import org.firstinspires.ftc.teamcode.scenes.superclasses.TeleOpBuilder
@@ -41,12 +42,16 @@ class test1 : TeleOpBuilder() {
         val wb = WheelbaseMecanumV1(P);
         GAPI.bindArray({true}, {true}, { arrayOf(gamepad1.left_stick_x.toDouble(), -gamepad1.left_stick_y.toDouble(), gamepad1.right_stick_x.toDouble()) }, { pws: Array<Double> -> wb.setAxisPower(pws[0], pws[1], pws[2]) });
 
-        val grab = ShooterSingleMotorV1(P);
-        GAPI.bindVoid({true}, {gamepad1.left_bumper}, {grab.setMtPowerShooter(-.7)});
-        GAPI.bindVoid({true}, {gamepad1.right_bumper}, {grab.setMtPowerShooter(1.0)});
-        GAPI.bindArray({true}, {true}, { arrayOf((if (gamepad1.a) 1.0 else 0.0) + (if (gamepad1.x) -1.0 else 0.0), (if (gamepad1.b) 1.0 else 0.0) + (if (gamepad1.y) -1.0 else 0.0)) }, { pws: Array<Double> -> telemetry.addData("asd", pws[0]); telemetry.update(); grab.setMtPowerServos(pws[0], pws[1]) })
-        GAPI.bindDouble({true}, {!gamepad1.left_bumper && !gamepad1.right_bumper}, {gamepad1.right_trigger.toDouble()}, {pw: Double -> grab.setMtPowerShooter(pw)});
-        GAPI.bindVoid({true}, {!gamepad1.left_bumper && !gamepad1.right_bumper && abs(gamepad1.right_trigger) < .0789}, {grab.setMtPowerShooter(0.0)});
+        val sht = ShooterVertV1(P);
+        GAPI.bindVoid({true}, {P.gamepad1.right_bumper}, {sht.setMtPowerShooter(1.0)} )
+        GAPI.bindVoid({true}, {P.gamepad1.left_bumper}, {sht.setMtPowerShooter(0.0)})
+
+        //val grab = ShooterSingleMotorV1(P);
+        //GAPI.bindVoid({true}, {gamepad1.left_bumper}, {grab.setMtPowerShooter(-.7)});
+        //GAPI.bindVoid({true}, {gamepad1.right_bumper}, {grab.setMtPowerShooter(1.0)});
+        //GAPI.bindArray({true}, {true}, { arrayOf((if (gamepad1.a) 1.0 else 0.0) + (if (gamepad1.x) -1.0 else 0.0), (if (gamepad1.b) 1.0 else 0.0) + (if (gamepad1.y) -1.0 else 0.0)) }, { pws: Array<Double> -> telemetry.addData("asd", pws[0]); telemetry.update(); grab.setMtPowerServos(pws[0], pws[1]) })
+        //GAPI.bindDouble({true}, {!gamepad1.left_bumper && !gamepad1.right_bumper}, {gamepad1.right_trigger.toDouble()}, {pw: Double -> grab.setMtPowerShooter(pw)});
+        //GAPI.bindVoid({true}, {!gamepad1.left_bumper && !gamepad1.right_bumper && abs(gamepad1.right_trigger) < .0789}, {grab.setMtPowerShooter(0.0)});
 
     }
 }
