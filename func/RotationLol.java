@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.modules.imu.ImuImuv1;
 import org.firstinspires.ftc.teamcode.modules.imu.ImuV1;
 import org.firstinspires.ftc.teamcode.modules.wheelbase.versions.WheelbaseMecanumV1;
 
@@ -14,12 +15,12 @@ public class RotationLol {
     public static double ErTarget = .5;
     public static double ErSpeedTarget = .5;
     double ErLast = 0;
-    ImuV1 imu;
+    ImuImuv1 imu;
     WheelbaseMecanumV1 wb;
     LinearOpMode L;
     Telemetry telemetry;
 
-    public RotationLol(ImuV1 imu, WheelbaseMecanumV1 wb, LinearOpMode L, Telemetry telemetry) {
+    public RotationLol(ImuImuv1 imu, WheelbaseMecanumV1 wb, LinearOpMode L, Telemetry telemetry) {
         this.imu = imu;
         this.wb = wb;
         this.L = L;
