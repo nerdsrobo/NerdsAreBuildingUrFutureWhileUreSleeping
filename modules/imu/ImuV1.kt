@@ -24,6 +24,7 @@ class ImuV1(P: RobotPack) : Module(P) {
         imu = P.hwmp.get(BNO055IMU::class.java, "imu")
         imu.initialize(parameters)
         while (!imu.isGyroCalibrated) { //Калибровка акселерометра
+            Thread.sleep(50);
             P.telemetry.addData("Wait", "Calibration") //Сообщение о калибровке
             P.telemetry.update()
         }
