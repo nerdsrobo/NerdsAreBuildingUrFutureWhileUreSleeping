@@ -24,13 +24,13 @@ public class ImuImuv1 {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hwmp.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-        while (!imu.isGyroCalibrated()) { //Калибровка акселерометра
+        /*while (!imu.isGyroCalibrated()) { //Калибровка акселерометра
             Thread.sleep(50);
             telemetry.addData("Wait", "Calibration"); //Сообщение о калибровке
             telemetry.update();
         }
         telemetry.addData("Done!", "Calibrated"); //Сообщение об окончании калибровки
-        telemetry.update();
+        telemetry.update();*/
     }
 
     public double getAngle() { //Функция получения данных с акселерометра

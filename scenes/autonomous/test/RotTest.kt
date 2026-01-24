@@ -19,6 +19,10 @@ class RotTest() : AutonomousBuilder() {
     }
 
     override fun moves(P: RobotPack) {
+        while ( true ) {
+            telemetry.addData("a", imu.angle);
+            telemetry.update();
+        }
         rotLol?.rot(45.0);
     }
 }
