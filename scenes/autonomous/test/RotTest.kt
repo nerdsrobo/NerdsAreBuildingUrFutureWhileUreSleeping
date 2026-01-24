@@ -15,7 +15,7 @@ class RotTest() : AutonomousBuilder() {
     override fun init_(P: RobotPack) {
         wb = WheelbaseMecanumV1(P);
         imu = ImuV1(P);
-        rotLol = RotationLol(imu, wb, this);
+        rotLol = RotationLol(imu, wb, this, telemetry);
     }
 
     override fun moves(P: RobotPack) {
