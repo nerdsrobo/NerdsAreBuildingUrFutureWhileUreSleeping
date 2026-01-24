@@ -22,11 +22,11 @@ class SortSingleAndServosV1(P: RobotPack) : SortSingleAndServos(P) {
     }
 
     companion object {
-        const val kSRT = -1.0;
+        const val kSRT = 1.0;
         const val TLK_L_UP = 1.0;
         const val TLK_L_DWN = 0.0;
-        const val TLK_R_UP = 1.0;
-        const val TLK_R_DWN = 0.0;
+        const val TLK_R_UP = 0.0;
+        const val TLK_R_DWN = 1.0;
     }
 
 }
