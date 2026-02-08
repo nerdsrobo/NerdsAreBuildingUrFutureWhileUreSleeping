@@ -14,8 +14,8 @@ class WheelbaseMecanumV1(P: RobotPack) : WheelbaseSuper4Wheel(P) {
         setMtPower(
             -pwX - pwY + pwRot,
             pwX - pwY + pwRot,
-            pwX + pwY + pwRot,
-            -pwX + pwY + pwRot
+            -pwX + pwY + pwRot,
+            pwX + pwY + pwRot
         );
     }
 }

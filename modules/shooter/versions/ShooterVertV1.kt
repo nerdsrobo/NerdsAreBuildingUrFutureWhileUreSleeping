@@ -11,6 +11,6 @@ class ShooterVertV1(P: RobotPack) : ShooterVert(P) {
         SHT.power = pw*kSHT;
     }
     companion object {
-        const val kSHT = -1;
+        const val kSHT = -.82578087798980;
     }
 }
