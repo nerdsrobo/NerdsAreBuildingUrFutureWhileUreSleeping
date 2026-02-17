@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.scenes.superclasses.AutonomousBuilder
 import org.firstinspires.ftc.teamcode.func.RotationLol
 import org.firstinspires.ftc.teamcode.modules.imu.ImuImuv1
 
-@Autonomous(name = "Проиграли")
+@Autonomous(name = "LEGACY - Проиграли", group = "legacy")
 class RotTest() : AutonomousBuilder() {
     var wb: WheelbaseMecanumV1? = null;
     var imu: ImuImuv1? = null;

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.modules.wheelbase.versions.WheelbaseMecanumV1
 import org.firstinspires.ftc.teamcode.scenes.superclasses.TeleOpBuilder
 
-@TeleOp(name="2-3 года")
+@TeleOp(name="LEGACY - 2-3 года", group = "legacy")
 public class Jan10() : TeleOpBuilder() {
     override fun init_(P: RobotPack) {
         val wb = WheelbaseMecanumV1(P);

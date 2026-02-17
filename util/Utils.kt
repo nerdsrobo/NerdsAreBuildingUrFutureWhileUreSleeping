@@ -9,4 +9,9 @@ class Utils {
             Thread.currentThread().interrupt();
         }
     }
+    fun absSign(valu: Double, absMax: Double): Double {
+        if ( valu > absMax ) { return absMax; }
+        else if ( valu < -absMax ) { return -absMax; }
+        return valu;
+    }
 }
