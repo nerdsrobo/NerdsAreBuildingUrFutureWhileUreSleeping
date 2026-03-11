@@ -4,9 +4,10 @@ import org.firstinspires.ftc.teamcode.util.Utils
 import org.firstinspires.ftc.teamcode.v2.components.superclasses.PD
 import org.firstinspires.ftc.teamcode.v2.components.superclasses.ProgramComponent
 import org.firstinspires.ftc.teamcode.v2.components.util.ArtefactColor
+import org.firstinspires.ftc.teamcode.v2.components.util.UsefulFuncs
 import org.firstinspires.ftc.teamcode.v2.modules.Sorter
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
-import org.firstinspires.ftc.teamcode.v2.util.Configurable
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigSorterController
 import kotlin.math.abs
 
 enum class DaMode {
@@ -18,16 +19,16 @@ class SorterController(P: RobotPack) : ProgramComponent(P) {
 
     var slots: ArrayList<ArtefactColor> = arrayListOf(ArtefactColor.NULL, ArtefactColor.NULL, ArtefactColor.NULL);
 
-    val perSlotTicks = Configurable.SrtControlTicksPerSlot;
+    val perSlotTicks = ConfigSorterController.SrtControlTicksPerSlot;
 
-    val changeDaModeTicks = Configurable.SrtControlChangeDaModeTicks;
+    val changeDaModeTicks = ConfigSorterController.SrtControlChangeDaModeTicks;
 
     var daMode: DaMode = DaMode.SHOOT;
 
     var control = true;
 
     var targetTicks = 0;
-    val srtPd = PD(Configurable.SrtControlKP, Configurable.SrtControlKD);
+    val srtPd = PD(ConfigSorterController.SrtControlKP, ConfigSorterController.SrtControlKD);
 
     fun getToPosition(ticks: Int) {
         targetTicks += ticks;
@@ -44,7 +45,7 @@ class SorterController(P: RobotPack) : ProgramComponent(P) {
     }
 
     fun ifGotToPosition(): Boolean {
-        return ( abs(targetTicks - srt.getSrtTicks()) < Configurable.SIXSEVEN );
+        return ( abs(targetTicks - srt.getSrtTicks()) < ConfigSorterController.SIXSEVEN );
     }
 
     fun changeDaMode(mode: DaMode) {
@@ -67,14 +68,12 @@ class SorterController(P: RobotPack) : ProgramComponent(P) {
 
     var lastU = 0.0;
 
-    val util = Utils()
-
     override fun tick() {
         //P.telemetry.addData("asd", targetTicks - srt.getSrtTicks().toDouble());
         lastU = srtPd.tick(targetTicks - srt.getSrtTicks().toDouble());
         //P.telemetry.addData("asdsda", lastU);
         //P.telemetry.update();
-        if ( control ) { srt.setSrtPower(util.absSign(lastU, .44)); }
+        if ( control ) { srt.setSrtPower(UsefulFuncs.absSign(lastU, .44)); }
         if ( ifGotToPosition() ) { control=false; srt.setSrtPower(0.0)}
         else { control = true; }
     }

@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.v2.components.superclasses
 
-class PD(kp: Double, kd: Double) {
-    val kp = kp;
-    val kd = kd;
+class PD(val kp: Double, val kd: Double) {
     var ErD = 0.0;
 
     fun reset() {

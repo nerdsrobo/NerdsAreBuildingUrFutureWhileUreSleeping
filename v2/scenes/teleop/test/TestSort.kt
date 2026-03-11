@@ -17,8 +17,6 @@ class TestSort() : TeleOpPacker() {
         val wb = Wheelbase(P);
         val sht = Shooter(P);
 
-        linkerApi.addModules(arrayListOf(srt));
-
         val srtControl = SorterController(P);
 
         srt.SRT.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;

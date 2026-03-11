@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.v2.scenes.teleop.field
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.v2.components.DaMode
 import org.firstinspires.ftc.teamcode.v2.components.SorterController
-import org.firstinspires.ftc.teamcode.v2.components.util.ArtefactColor
 import org.firstinspires.ftc.teamcode.v2.modules.Grab
 import org.firstinspires.ftc.teamcode.v2.modules.Shooter
 import org.firstinspires.ftc.teamcode.v2.modules.Sorter
@@ -12,10 +12,11 @@ import org.firstinspires.ftc.teamcode.v2.modules.Tolkalka
 import org.firstinspires.ftc.teamcode.v2.modules.Wheelbase
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.v2.scenes.superclasses.TeleOpPacker
-import org.firstinspires.ftc.teamcode.v2.util.Configurable
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigSorterController
 import kotlin.math.round
 
 @TeleOp(name="бородавачный полу прайм")
+@Disabled
 class Feb15(): TeleOpPacker() {
     override fun init_(P: RobotPack) {
         val srt = Sorter(P);
@@ -23,8 +24,6 @@ class Feb15(): TeleOpPacker() {
         val sht = Shooter(P);
         val tlk = Tolkalka(P);
         val grb = Grab(P);
-
-        linkerApi.addModules(arrayListOf(srt, wb, sht, tlk, grb));
 
         val srtControl = SorterController(P);
 
@@ -61,11 +60,12 @@ class Feb15(): TeleOpPacker() {
 
         linkerApi.bindFlag({true}, {gamepad1.a}, {srtControl.slotSwap(-1)});
 
-        linkerApi.bindFlag({linkerApi.state == "default"}, {gamepad1.right_bumper}, {linkerApi.setState_("timed"); srtControl.changeDaMode(DaMode.SHOOT); srtControl.getToPosition(Configurable.LOLSIXSEVEN); linkerApi.setTimer(450, {linkerApi.setState_("shoot")})})
+        linkerApi.bindFlag({linkerApi.state == "default"}, {gamepad1.right_bumper}, {linkerApi.state = "timed"; srtControl.changeDaMode(DaMode.SHOOT); srtControl.getToPosition(
+            ConfigSorterController.LOLSIXSEVEN); linkerApi.setTimer(450, {linkerApi.state = "shoot"})})
 
         linkerApi.onState("shoot", {sht.setShtPower(1.0)})
 
-        linkerApi.bindFlag({linkerApi.state == "shoot"}, {gamepad1.left_bumper}, {linkerApi.setState_("timed"); sht.setShtPower(0.0); srtControl.changeDaMode(DaMode.GRAB); linkerApi.setTimer(450, {linkerApi.setState_("default")})});
+        linkerApi.bindFlag({linkerApi.state == "shoot"}, {gamepad1.left_bumper}, {linkerApi.state = "timed"; sht.setShtPower(0.0); srtControl.changeDaMode(DaMode.GRAB); linkerApi.setTimer(450, {linkerApi.state = "default"})});
 
         linkerApi.bindFlag({linkerApi.state == "shoot"}, {gamepad1.y}, {tlk.servoUp()});
         linkerApi.bindFlag({true}, {gamepad1.b}, {tlk.servoDown()});

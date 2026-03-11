@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.v2
 
+import org.firstinspires.ftc.teamcode.v2.components.superclasses.ProgramComponent
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.Module
+import org.firstinspires.ftc.teamcode.v2.systems.superclasses.ProgramSystem
 import kotlin.reflect.KClass
 
 class VoidHandler(val condition: () -> Boolean, val conditionButton: () -> Boolean, val func: () -> Unit) {}
@@ -9,24 +11,27 @@ class ArrayDoubleHandler(val condition: () -> Boolean, val conditionButton: () -
 class OnStateHandler(val stateName: String, val func: (stateName: String) -> Unit) {}
 class TimerHandler(val timeout: Long, val timer: Long, val func: () -> Unit) {}
 class FlaggedButtonHandler(val condition: () -> Boolean, val conditionButton: () -> Boolean, val func: () -> Unit, var flag: Boolean) {}
+class OnOpModeStartHandler(val func: () -> Unit) {}
 
 class LinkerAPI {
-    var state = "default";
-    var onStateHandlers: ArrayList<OnStateHandler> = arrayListOf();
-    fun setState_(state: String) {
-        this.state = state;
-        for ( i in onStateHandlers.indices ) {
-            if ( state == onStateHandlers[i].stateName ) {
-                onStateHandlers[i].func(state);
+    var state = "default"
+        get() = field
+        set(value) {
+            for ( i in onStateHandlers.indices ) {
+                if ( value == onStateHandlers[i].stateName ) {
+                    onStateHandlers[i].func(value);
+                }
             }
+            field = value;
         }
-    }
+    private var onStateHandlers: ArrayList<OnStateHandler> = arrayListOf();
 
-    var voidHandlers: ArrayList<VoidHandler> = arrayListOf();
-    var doubleHandlers: ArrayList<DoubleHandler> = arrayListOf();
-    var arrayDoubleHandlers: ArrayList<ArrayDoubleHandler> = arrayListOf();
-    var timersHandlers: ArrayList<TimerHandler> = arrayListOf();
-    var flaggedButtonHandlers: ArrayList<FlaggedButtonHandler> = arrayListOf();
+    private var voidHandlers: ArrayList<VoidHandler> = arrayListOf();
+    private var doubleHandlers: ArrayList<DoubleHandler> = arrayListOf();
+    private var arrayDoubleHandlers: ArrayList<ArrayDoubleHandler> = arrayListOf();
+    private var timersHandlers: ArrayList<TimerHandler> = arrayListOf();
+    private var flaggedButtonHandlers: ArrayList<FlaggedButtonHandler> = arrayListOf();
+    private var onOpModeStartHandlers: ArrayList<OnOpModeStartHandler> = arrayListOf();
 
     fun tick() {
         for ( i in voidHandlers.indices ) {
@@ -54,12 +59,35 @@ class LinkerAPI {
             }
         }
         val time = System.currentTimeMillis();
-        for ( i in timersHandlers.indices ) {
-            if ( time - timersHandlers[i].timeout > timersHandlers[i].timer ) {
-                timersHandlers[i].func();
-                timersHandlers.removeAt(i);
-                break;
+//        for ( i in timersHandlers.indices ) {
+//            if ( time - timersHandlers[i].timeout > timersHandlers[i].timer ) {
+//                timersHandlers[i].func();
+//                timersHandlers.removeAt(i);
+//                break;
+//            }
+//        }
+        val handlers = timersHandlers.iterator();
+        while ( handlers.hasNext() ) {
+            val handler = handlers.next();
+            if ( time - handler.timeout > handler.timer ) {
+                handler.func();
+                handlers.remove();
             }
+        }
+        // for ( c in activeComponents ) {
+        //     requestComponent(c)?.tick();
+        // }
+        for ( c in activeComponents + alwaysActiveComponents ) {
+            c.tick();
+        }
+        for ( s in systems ) {
+            s.tick();
+        }
+    }
+
+    fun executeOnOpModeStartHandlers() {
+        for ( handler in onOpModeStartHandlers ) {
+            handler.func();
         }
     }
 
@@ -82,11 +110,14 @@ class LinkerAPI {
     fun setTimer(timer: Long, func: () -> Unit) {
         timersHandlers.add(TimerHandler(System.currentTimeMillis(), timer, func));
     }
+    fun onOpModeStart(func: () -> Unit) {
+        onOpModeStartHandlers.add(OnOpModeStartHandler(func))
+    }
 
-    var modules: ArrayList<Module> = arrayListOf();
+    private var modules: ArrayList<Module> = arrayListOf();
 
-    fun addModules(modulesToAdd: ArrayList<Module>) {
-        modules += modulesToAdd;
+    fun addModule(moduleToAdd: Module) {
+        modules.add(moduleToAdd);
     }
 
     fun <T: Module>requestModule(module: KClass<T>): Module? {
@@ -94,6 +125,46 @@ class LinkerAPI {
             if ( m::class == module ) { return m; }
         }
         return null;
+    }
+
+    private var components: ArrayList<ProgramComponent> = arrayListOf();
+
+    fun addComponent(componentToAdd: ProgramComponent) {
+        components.add(componentToAdd);
+    }
+
+    fun <T: ProgramComponent>requestComponent(component: KClass<T>): ProgramComponent? {
+        for ( c in components ) {
+            if ( c::class == component ) { return c; }
+        }
+        return null;
+    }
+
+    private var systems: ArrayList<ProgramSystem> = arrayListOf();
+
+    fun addSystem(systemToAdd: ProgramSystem) {
+        systems.add(systemToAdd);
+    }
+
+    fun <T: ProgramSystem>requestSystem(system: KClass<T>): ProgramSystem? {
+        for ( s in systems ) {
+            if ( s::class == system ) { return s; }
+        }
+        return null;
+    }
+
+    // private var activeComponents: ArrayList<KClass<out ProgramComponent>> = arrayListOf();
+
+    // fun activateComponents(components: Array<out ProgramComponent>) {
+    //     activeComponents = arrayListOf();
+    //     for ( c in components ) { activeComponents.add(c::class); }
+    // }
+
+    var activeComponents: ArrayList<ProgramComponent> = arrayListOf();
+    var alwaysActiveComponents: ArrayList<ProgramComponent> = arrayListOf();
+
+    fun activateComponents(components: ArrayList<ProgramComponent>) {
+        activeComponents = components;
     }
 
 }

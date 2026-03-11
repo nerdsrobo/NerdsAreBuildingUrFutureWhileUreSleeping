@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.config.Config
 import org.firstinspires.ftc.teamcode.modules.shooter.ShooterSingleMotor
 import org.firstinspires.ftc.teamcode.modules.superclasses.RobotPack
 
-@Config
+//@Config
 class ShooterSingleMotorV1(P: RobotPack) : ShooterSingleMotor(P) {
     fun setMtPowerShooter(pw: Double) {
         SHT.power = pw*kSHT;

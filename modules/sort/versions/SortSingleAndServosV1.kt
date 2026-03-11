@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.config.Config
 import org.firstinspires.ftc.teamcode.modules.sort.SortSingleAndServos
 import org.firstinspires.ftc.teamcode.modules.superclasses.RobotPack
 
-@Config
+//@Config
 class SortSingleAndServosV1(P: RobotPack) : SortSingleAndServos(P) {
 
     fun setPwSort(pw: Double) {

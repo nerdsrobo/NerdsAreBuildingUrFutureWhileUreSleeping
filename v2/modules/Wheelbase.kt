@@ -15,16 +15,21 @@ class Wheelbase(P: RobotPack) : Module(P) {
     val LB_CLOCKWISE = 1.0;
     val RB_CLOCKWISE = 1.0;
 
+    val YAencMotor = RB;
+    val YBencMotor = LF;
+    val XencMotor = RF;
+    val notEncMotor = LB;
+
     init {
         LB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         RB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         LF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         RF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
-        LB.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-        RB.mode = DcMotor.RunMode.RUN_USING_ENCODER;
-        LF.mode = DcMotor.RunMode.RUN_USING_ENCODER;
-        RF.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+        notEncMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+        YAencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+        YBencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+        XencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
     }
 
     fun setMtPower(pwLB: Double, pwRB: Double, pwLF: Double, pwRF: Double) {
@@ -47,5 +52,20 @@ class Wheelbase(P: RobotPack) : Module(P) {
             LF_CLOCKWISE * (-pwX - pwY - pwRot),
             RF_CLOCKWISE * (-pwX + pwY -pwRot)
         )
+    }
+
+    class OdometryPhies(val YA: Int, val YB: Int, val X: Int) {}
+
+    fun resetOdometry() {
+        YAencMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+        YAencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+        YBencMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+        YBencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+        XencMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER;
+        XencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+    }
+
+    fun getOdometryPhies(): OdometryPhies {
+        return OdometryPhies(YAencMotor.currentPosition, YBencMotor.currentPosition, XencMotor.currentPosition);
     }
 }

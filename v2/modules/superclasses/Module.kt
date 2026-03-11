@@ -4,4 +4,8 @@ import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 
 abstract class Module (val P: RobotPack) {
 
+    init {
+        P.linkerApi.addModule(this);
+    }
+
 }
