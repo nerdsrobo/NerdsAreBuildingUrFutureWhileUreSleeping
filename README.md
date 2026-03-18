@@ -1,14 +1,5 @@
 ## Памятка по запуску
 
-**build.common.gradle для проекта**
-```gradle
-android {
-    defaultConfig {
-        minSdkVersion 26
-    }
-}
-```
-
 **build.dependencies.gradle для проекта**
 ```gradle
 repositories {
@@ -18,18 +9,9 @@ repositories {
 }
 dependencies {
     implementation 'com.acmerobotics.dashboard:dashboard:0.5.0'
-    implementation 'org.tensorflow:tensorflow-lite:2.15.0'
-    implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.15.0'
-}
-```
-
-**build.gradle для FtcRobotController**
-```gradle
-android {
-    defaultConfig {
-        minSdkVersion 26
-    }
+    implementation 'org.tensorflow:tensorflow-lite:2.0.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.4.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.0.0'
 }
 ```
 
