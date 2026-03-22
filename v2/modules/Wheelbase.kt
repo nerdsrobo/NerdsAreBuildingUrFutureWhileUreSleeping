@@ -3,17 +3,16 @@ package org.firstinspires.ftc.teamcode.v2.modules
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.Module
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigWheelbase.LB_CLOCKWISE
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigWheelbase.LF_CLOCKWISE
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigWheelbase.RB_CLOCKWISE
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigWheelbase.RF_CLOCKWISE
 
 class Wheelbase(P: RobotPack) : Module(P) {
     val LB = P.hwmp.get(DcMotor::class.java, "LB")
     val RB = P.hwmp.get(DcMotor::class.java, "RB")
     val LF = P.hwmp.get(DcMotor::class.java, "LF")
     val RF = P.hwmp.get(DcMotor::class.java, "RB")
-
-    val LF_CLOCKWISE = 1.0;
-    val RF_CLOCKWISE = 1.0;
-    val LB_CLOCKWISE = 1.0;
-    val RB_CLOCKWISE = 1.0;
 
     val YAencMotor = RB;
     val YBencMotor = LF;
