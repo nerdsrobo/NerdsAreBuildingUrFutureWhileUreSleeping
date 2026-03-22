@@ -12,5 +12,6 @@ public class ConfigSorterControllerV2 {
     public static double runToSwitchPw = .4765432142;
     //public static int SrtControlTicksPerSlot = 480;
     //public static int SrtControlChangeDaModeTicks = -180;
+    public static double kSrt = -.4;
 
 }

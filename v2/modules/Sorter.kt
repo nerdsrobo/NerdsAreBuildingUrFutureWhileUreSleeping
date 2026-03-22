@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.v2.modules
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DigitalChannel
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.modules.sort.versions.SortSingleAndServosV1.Companion.kSRT
+import org.firstinspires.ftc.teamcode.v2.components.util.UsefulFuncs
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.Module
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 
@@ -14,8 +16,6 @@ class Sorter(P: RobotPack) : Module(P) {
     val HLD_GRB_L = P.hwmp.get(Servo::class.java, "HLD_GRB_L");
     val HLD_GRB_R = P.hwmp.get(Servo::class.java, "HLD_GRB_R");
     val HLD_SHT   = P.hwmp.get(Servo::class.java, "HLD_SHT");
-
-    val kSRT = -1.0;
 
     val grb_l_closed = 0.5;
     val grb_r_closed = 0.5;
@@ -32,7 +32,7 @@ class Sorter(P: RobotPack) : Module(P) {
     }
 
     fun setSrtPower(pw: Double) {
-        SRT.power = pw * kSRT;
+        SRT.power = UsefulFuncs.absSign(pw, 1.0) * kSRT;
     }
 
     fun getBtnState(): Boolean {

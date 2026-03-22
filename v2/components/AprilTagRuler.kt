@@ -58,6 +58,8 @@ class AprilTagRuler(P: RobotPack): ProgramComponent(P) {
     var lastAngle = .0;
     var absUpdated = false;
 
+    var lastRelCoords = arrayListOf(.0, .0, .0);
+
     fun open(isStreamToDash: Boolean) {
         camSht.openWithPipeline(pipe, isStreamToDash);
     }
@@ -89,6 +91,7 @@ class AprilTagRuler(P: RobotPack): ProgramComponent(P) {
                                 d.pose.y,
                                 -d.pose.R[0, 0].toDouble() / PI * 180.0 - 45.0
                             );
+                            lastRelCoords = arrayListOf(d.pose.x, d.pose.y, d.pose.R[0, 0].toDouble());
                             absX = 330 - relCoords.x - ConfigShooterCam.offsetX;
                             absY = 330 - relCoords.y - ConfigShooterCam.offsetY;
                             when ( P.alliance ) { Alliance.BLUE -> {

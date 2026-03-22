@@ -32,6 +32,7 @@ class LinkerAPI {
     private var timersHandlers: ArrayList<TimerHandler> = arrayListOf();
     private var flaggedButtonHandlers: ArrayList<FlaggedButtonHandler> = arrayListOf();
     private var onOpModeStartHandlers: ArrayList<OnOpModeStartHandler> = arrayListOf();
+    private var everyTicksHandlers: ArrayList<() -> Unit> = arrayListOf();
 
     fun tick() {
         for ( i in voidHandlers.indices ) {
@@ -112,6 +113,9 @@ class LinkerAPI {
     }
     fun onOpModeStart(func: () -> Unit) {
         onOpModeStartHandlers.add(OnOpModeStartHandler(func))
+    }
+    fun everyTick(func: () -> Unit) {
+        everyTicksHandlers.add(func);
     }
 
     private var modules: ArrayList<Module> = arrayListOf();
