@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.v2.systems
 
+import org.firstinspires.ftc.teamcode.util.Utils
 import org.firstinspires.ftc.teamcode.v2.components.AngleSponsor
 import org.firstinspires.ftc.teamcode.v2.components.AprilTagRuler
 import org.firstinspires.ftc.teamcode.v2.components.Odometry
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigHogRider
 
 class HogRider(P: RobotPack): ProgramSystem(P) {
     private val wb = requestModule(Wheelbase::class) as Wheelbase;
-    private val odometry = requestComponent(Odometry::class) as Odometry;
+    //private val odometry = requestComponent(Odometry::class) as Odometry;
     private val aprilTagRuler = requestComponent(AprilTagRuler::class) as AprilTagRuler;
     private val angleSponsor = requestComponent(AngleSponsor::class) as AngleSponsor;
 
@@ -42,6 +43,8 @@ class HogRider(P: RobotPack): ProgramSystem(P) {
     var rotateCoords = true;
     var normPower = true;
     var powerAxis = true;
+
+    var maxNormPw = 1.0;
 
     var pwROverride = .0;
 
@@ -82,30 +85,34 @@ class HogRider(P: RobotPack): ProgramSystem(P) {
             npwY = rotated.y;
         }
         if ( normPower ) {
-            val normed = UsefulFuncs.normToMax(arrayListOf(npwX, npwY, npwR), 1.0)
+            val normed = UsefulFuncs.normToMax(arrayListOf(npwX, npwY, npwR), maxNormPw);
             npwX = normed[0]; npwY = normed[1]; npwR = normed[2];
         }
         wb.setAxisPower(npwX, npwY, npwR);
     }
 
     override fun tick() {
-        if ( calcOdometryPos ) {
-            absX = startAbsX + odometry.relX;
-            absY = startAbsY + odometry.relY;
-        }
+        //if ( calcOdometryPos ) {
+        //    absX = startAbsX + odometry.relX;
+        //    absY = startAbsY + odometry.relY;
+        //}
         if ( calcAprilTagPos ) {
             absX = aprilTagRuler.absX;
             absY = aprilTagRuler.absY;
             aprilTagFound = aprilTagRuler.absUpdated;
         }
         if ( updateByImu ) { angle = angleSponsor.getCurrAngle(); }
-        else { if (calcAprilTagPos && aprilTagRuler.absUpdated) { angle = aprilTagRuler.lastAngle; } else { angle = odometry.lastAngle; } }
+        else { if (calcAprilTagPos && aprilTagRuler.absUpdated) { angle = aprilTagRuler.lastAngle; } /*else { angle = odometry.lastAngle; }*/ }
         if ( controlXY ) {
             pwX = moveXPID.tick(targetX - absX);
             pwY = moveYPID.tick(targetY - absY);
         }
         if ( controlAngle ) {
-            pwR = moveRPID.tick(targetAngle - angle);
+
+            //попытка в исправление ошибки 180
+            pwR = moveRPID.tick( - UsefulFuncs.constrTo180(angle - targetAngle) );
+
+            //pwR = moveRPID.tick(targetAngle - angle);
         } else { pwR = pwROverride; }
         if ( powerAxis ) { setAxisPowerTick(); }
     }

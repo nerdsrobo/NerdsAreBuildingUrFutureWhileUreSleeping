@@ -87,7 +87,7 @@ class Calculations {
             val V = wheelW * ConfigLookAtGoalCalcs.shooterWheelD * PI;
             val distToGoal = sqrt((robotPoint.x-targetPoint.x).pow(2) + (robotPoint.y-targetPoint.y).pow(2))
             var alpha = ConfigShooterController.servoDownAngle;
-            while ( alpha < ConfigShooterController.servoUpAngle+.5 ) {
+            while ( alpha < ConfigShooterController.servoUpAngle+.1 ) {
                 if ( calcParabolaX(alpha, V, 9.80665, targetPointHeight, is1parabolaPoint) > distToGoal ) { break; }
                 alpha += .5;
             }

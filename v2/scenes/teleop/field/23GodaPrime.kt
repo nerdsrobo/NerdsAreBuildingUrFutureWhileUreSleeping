@@ -67,7 +67,7 @@ open class T23GodaPrime(alliance: Alliance): TeleOpPacker(alliance) {
             {pws -> run{hogRider.pwX = pws[0]; hogRider.pwY = pws[1]; hogRider.controlXY = false;}});
         var rotateFlag = false;
         linkerApi.bindDouble({!shtSys.blockMoving && linkerApi.state != "waitforshoot"}, {true}, {gamepad1.right_stick_x.toDouble()}, {pw -> run{
-            if ( abs(pw) > .08 ) { if ( !rotateFlag ) { rotateFlag = true; }; hogRider.pwROverride = pw; }
+            if ( abs(pw) > .08 ) { if ( !rotateFlag ) { rotateFlag = true; }; hogRider.pwROverride = pw; hogRider.controlAngle = false; }
             else { if (rotateFlag) { rotateFlag = false; hogRider.targetAngle = hogRider.angle; hogRider.controlAngle = true; } }
         }})
 
@@ -94,15 +94,19 @@ open class T23GodaPrime(alliance: Alliance): TeleOpPacker(alliance) {
         linkerApi.onState("default", {
             linkerApi.activeComponents.remove(shtControl);
             linkerApi.activeComponents.add(grbControl);
+            grbControl.open(false);
         })
         linkerApi.onState("readytoorder", {
             linkerApi.activeComponents.remove(grbControl);
+            grbControl.close();
             linkerApi.activeComponents.add(shtControl);
             linkerApi.activeComponents.add(aprilTagRuler);
+            aprilTagRuler.open(false);
         })
         linkerApi.onState("waitforshoot", {
             hogRider.pwX = .0; hogRider.pwY = .0; hogRider.pwROverride = .0;
             linkerApi.activeComponents.remove(aprilTagRuler);
+            aprilTagRuler.close();
         })
 
     }

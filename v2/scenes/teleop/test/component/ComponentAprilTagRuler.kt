@@ -9,10 +9,10 @@ import org.firstinspires.ftc.teamcode.v2.modules.Wheelbase
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.v2.scenes.superclasses.TeleOpPacker
 
-@TeleOp(name = "COMPONENT - AprilTagRuler - BLUE", group = "module")
+@TeleOp(name = "COMPONENT - AprilTagRuler - BLUE", group = "component")
 class ComponentAprilTagRulerBlue(): ComponentAprilTagRuler(Alliance.BLUE) {}
 
-@TeleOp(name = "COMPONENT - AprilTagRuler - RED", group = "module")
+@TeleOp(name = "COMPONENT - AprilTagRuler - RED", group = "component")
 class ComponentAprilTagRulerRed(): ComponentAprilTagRuler(Alliance.RED) {}
 
 open class ComponentAprilTagRuler(alliance: Alliance): TeleOpPacker(alliance) {

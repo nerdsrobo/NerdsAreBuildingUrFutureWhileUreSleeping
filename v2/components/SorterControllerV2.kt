@@ -107,6 +107,6 @@ class SorterControllerV2(P: RobotPack): ProgramComponent(P) {
             } else if ( runToSwitchFlag ) { runToSwitchFlag = false; }
         }
         if ( ifGotToPosition() ) { controlPD=false; srt.setSrtPower(0.0)}
-        else { controlPD = true; }
+        else if ( !runToSwitch ) { controlPD = true; }
     }
 }
