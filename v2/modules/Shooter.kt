@@ -7,7 +7,9 @@ import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 
 class Shooter(P: RobotPack): Module(P) {
     val SHT = P.hwmp.get(DcMotor::class.java, "SHT");
-    val SHT_ANGLE = P.hwmp.get(Servo::class.java, "SHT_ANGLE");
+
+    val ShtR = P.hwmp.get(Servo::class.java, "ShtR");
+    val ShtL = P.hwmp.get(Servo::class.java, "ShtL")
 
     init {
         SHT.mode = DcMotor.RunMode.RUN_USING_ENCODER;
@@ -24,8 +26,9 @@ class Shooter(P: RobotPack): Module(P) {
         return SHT.currentPosition;
     }
 
-    fun setAnglePos(pos: Double) {
-        SHT_ANGLE.position = pos;
+    fun setAnglePos(posL: Double, posR: Double) {
+        ShtR.position = posR
+        ShtL.position = posL;
     }
 
 }

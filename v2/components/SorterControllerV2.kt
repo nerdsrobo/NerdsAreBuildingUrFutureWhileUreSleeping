@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigSorterController
 import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigSorterControllerV2
 import kotlin.math.abs
-import kotlin.math.sign
 
 class SorterControllerV2(P: RobotPack): ProgramComponent(P) {
     private val srt = requestModule(Sorter::class) as Sorter;
@@ -19,25 +18,23 @@ class SorterControllerV2(P: RobotPack): ProgramComponent(P) {
 
     var daMode: DaMode = DaMode.GRAB;
 
-    var controlPD = true;
+    var controlPD = false;
 
-    var runToSwitch = false;
-    var runToSwitchFlag = false;
-    var runToSwitchDirection = 0;
-
-    var targetTicks = 0;
-    var taskSlots = 0;
-    val srtPd = PD(ConfigSorterControllerV2.SrtControlKP, ConfigSorterControllerV2.SrtControlKD);
-
-    fun getToPosition(ticks: Int) {
-        targetTicks = srt.getSrtTicks() + ticks;
-    }
+    var runToSwitch = false
+    var runToSwitchDirection = 0
+    var taskSlots = 0
 
     fun slotSwap(slots: Int) {
-        runToSwitch = true;
-        runToSwitchDirection = sign(slots.toDouble()).toInt();
+        getToPosition(ConfigSorterControllerV2.ticksPerSlot * slots);
         taskSlots = abs(slots);
-        controlPD = false;
+    }
+
+    var targetTicks = 0
+    val srtPd = PD(ConfigSorterControllerV2.SrtControlKP, ConfigSorterControllerV2.SrtControlKD)
+
+    fun getToPosition(ticks: Int) {
+        targetTicks = srt.getSrtTicks() + ticks
+        controlPD = true
     }
 
     fun findNext(color: ArtefactColor) {
@@ -51,7 +48,7 @@ class SorterControllerV2(P: RobotPack): ProgramComponent(P) {
     }
 
     fun changeDaMode(mode: DaMode) {
-        if ( daMode == DaMode.SHOOT && mode == DaMode.GRAB ) { runToSwitch = true; runToSwitchDirection = -1; daMode = mode; }
+        if ( daMode == DaMode.SHOOT && mode == DaMode.GRAB ) { getToPosition(ConfigSorterControllerV2.positiveShootTicks); daMode = mode; }
         else if ( daMode == DaMode.GRAB && mode == DaMode.SHOOT ) { getToPosition(-ConfigSorterControllerV2.positiveShootTicks); daMode = mode; }
     }
 
@@ -69,7 +66,7 @@ class SorterControllerV2(P: RobotPack): ProgramComponent(P) {
     }
 
     fun isSorting(): Boolean {
-        return controlPD || runToSwitch;
+        return controlPD
     }
 
     fun servosToSort() {
@@ -86,27 +83,10 @@ class SorterControllerV2(P: RobotPack): ProgramComponent(P) {
     var lastU = 0.0;
 
     override fun tick() {
-        lastU = srtPd.tick(targetTicks - srt.getSrtTicks().toDouble());
+        lastU = srtPd.tick(targetTicks - srt.getSrtTicks().toDouble())
         if ( controlPD ) {
-            srt.setSrtPower(UsefulFuncs.absSign(lastU, .44));
-        } else if ( runToSwitch ) {
-            srt.setSrtPower(ConfigSorterControllerV2.runToSwitchPw * runToSwitchDirection);
-            if ( srt.getBtnState() ) {
-                if ( !runToSwitchFlag ) {
-                    runToSwitchFlag = true;
-                    taskSlots--;
-                    if ( taskSlots < 1 ) {
-                        taskSlots = 0;
-                        runToSwitch = false;
-                        if ( daMode == DaMode.SHOOT ) {
-                            if ( runToSwitchDirection == 1 ) { getToPosition(ConfigSorterControllerV2.positiveShootTicks); controlPD = true; }
-                            else { getToPosition(ConfigSorterControllerV2.negativeShootTicks); controlPD = true; }
-                        } else { srt.setSrtPower(0.0); }
-                    }
-                }
-            } else if ( runToSwitchFlag ) { runToSwitchFlag = false; }
+            if ( ifGotToPosition() ) { controlPD = false; srt.setSrtPower(0.0) }
+            else { srt.setSrtPower(UsefulFuncs.absSign(lastU, .44)) }
         }
-        if ( ifGotToPosition() ) { controlPD=false; srt.setSrtPower(0.0)}
-        else if ( !runToSwitch ) { controlPD = true; }
     }
 }

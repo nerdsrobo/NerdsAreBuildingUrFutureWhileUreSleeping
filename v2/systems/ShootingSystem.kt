@@ -3,19 +3,20 @@ package org.firstinspires.ftc.teamcode.v2.systems
 import org.firstinspires.ftc.teamcode.v2.components.DaMode
 import org.firstinspires.ftc.teamcode.v2.components.GrabController
 import org.firstinspires.ftc.teamcode.v2.components.LookAtGoalCalcs
-import org.firstinspires.ftc.teamcode.v2.components.ShooterController
+import org.firstinspires.ftc.teamcode.v2.components.ShooterV2Controller
 import org.firstinspires.ftc.teamcode.v2.components.SorterControllerV2
 import org.firstinspires.ftc.teamcode.v2.components.util.ArtefactColor
-import org.firstinspires.ftc.teamcode.v2.modules.Tolkalka
+import org.firstinspires.ftc.teamcode.v2.modules.TolkalkaV2
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.v2.systems.superclasses.ProgramSystem
 import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigShooterController
 
 class ShootingSystem(P: RobotPack) : ProgramSystem(P) {
     private val srtControl = requestComponent(SorterControllerV2::class) as SorterControllerV2;
-    private val shtControl = requestComponent(ShooterController::class) as ShooterController;
+    private val shtControl = requestComponent(ShooterV2Controller::class) as ShooterV2Controller;
     private val grbControl = requestComponent(GrabController::class) as GrabController;
-    private val tlk = requestModule(Tolkalka::class) as Tolkalka;
+    //private val tlk = requestModule(Tolkalka::class) as Tolkalka;
+    private val tlk = requestModule(TolkalkaV2::class) as TolkalkaV2;
     private val lookAtGoalCalcs = requestComponent(LookAtGoalCalcs::class) as LookAtGoalCalcs;
 
     var grbMove = 0;
@@ -64,12 +65,14 @@ class ShootingSystem(P: RobotPack) : ProgramSystem(P) {
         })
         P.linkerApi.bindVoid({state == "srttoexecute"}, {isServoReady && !srtControl.isSorting() && isTargetAngleReady && shtControl.isOnRevolutions()}, {state = "execute"})
         onState("execute", {
-            tlk.servoUp();
-            P.linkerApi.setTimer(450, {state = "executed"})
+            //tlk.servoUp();
+            tlk.setServPower(1.0);
+            P.linkerApi.setTimer(500, {state = "executed"})
         })
         onState("executed", {
-            tlk.servoDown();
-            P.linkerApi.setTimer(450, {state = "shooted"})
+            //tlk.servoDown();
+            if ( executeByOrder ) { tlk.setServPower(0.0); }
+            P.linkerApi.setTimer(50, {state = "shooted"})
         })
         onState("shooted", {
             artefactsInside--;
@@ -83,6 +86,7 @@ class ShootingSystem(P: RobotPack) : ProgramSystem(P) {
                 shtControl.control = true;
                 startShoot = false;
                 state = "srttogrb"
+
                 P.linkerApi.setTimer(450, {isServoReady = true;})
             }
             else {
@@ -143,9 +147,7 @@ class ShootingSystem(P: RobotPack) : ProgramSystem(P) {
         startShoot = true;
     }
 
-    fun initSort() {
-        srtControl.runToSwitch = true; srtControl.runToSwitchDirection = 1; srtControl.taskSlots = 1;
-    }
+    fun initSort() {}
 
     override fun tick() {
 

@@ -39,6 +39,6 @@ class Imu(P: RobotPack): Module(P) {
                 AngleUnit.DEGREES
             ) // переменная в которой будет храниться угол поворота под акселерометр
         val gravity = imu.gravity // здесь хранится важная информация для акселерометра
-        return angles.firstAngle
+        return -angles.firstAngle
     }
 }

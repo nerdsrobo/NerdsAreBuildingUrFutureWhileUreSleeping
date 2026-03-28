@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.v2.components.ShooterV2Controller
 import org.firstinspires.ftc.teamcode.v2.modules.ShooterV2
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.v2.scenes.superclasses.TeleOpPacker
+import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigShooterController
 
 @TeleOp(name = "COMPONENT - ShooterV2Controller", group = "component")
 class ComponentShoooooterV2Controller(): TeleOpPacker() {
@@ -16,7 +17,10 @@ class ComponentShoooooterV2Controller(): TeleOpPacker() {
         val shtControl = ShooterV2Controller(P);
         linkerApi.activeComponents.add(shtControl);
 
-        linkerApi.bindFlag({true}, {gamepad1.y}, {shtControl.targetW = 6.0; shtControl.stop = false;});
+        linkerApi.bindVoid({true}, {gamepad1.right_bumper}, {shtControl.control = false; sht.setShtPower(.6)});
+        linkerApi.bindVoid({true}, {!gamepad1.right_bumper}, {shtControl.control = true;})
+
+        linkerApi.bindFlag({true}, {gamepad1.y}, {shtControl.targetW = ConfigShooterController.nearMotorW; shtControl.stop = false;});
         linkerApi.bindFlag({true}, {gamepad1.b}, {shtControl.targetW = 0.0; shtControl.stop = true});
         linkerApi.bindFlag({true}, {gamepad1.dpad_up}, {shtControl.setAngle(35.0)});
         linkerApi.bindFlag({true}, {gamepad1.dpad_down}, {shtControl.setAngle(28.0)});
@@ -26,6 +30,7 @@ class ComponentShoooooterV2Controller(): TeleOpPacker() {
             dashTelemetry.addData("er", shtControl.targetW - shtControl.vel);
             dashTelemetry.addData("is on revs", shtControl.isOnRevolutions());
             dashTelemetry.addData("U", shtControl.U);
+            dashTelemetry.addData("ticks", sht.getShtTicks());
             dashTelemetry.update();
         })
     }

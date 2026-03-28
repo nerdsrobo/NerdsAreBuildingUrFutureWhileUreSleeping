@@ -38,6 +38,8 @@ open class ComponentAprilTagRuler(alliance: Alliance): TeleOpPacker(alliance) {
             dashTelemetry.addData("relX", aprilTagRuler.lastRelCoords[0]);
             dashTelemetry.addData("relY", aprilTagRuler.lastRelCoords[1]);
             dashTelemetry.addData("relAlpha", aprilTagRuler.lastRelCoords[2]);
+            dashTelemetry.addData("tagVisible", aprilTagRuler.tagVisible);
+            dashTelemetry.addData("det", aprilTagRuler.pipeTest.detections);
             dashTelemetry.update();
         })
     }

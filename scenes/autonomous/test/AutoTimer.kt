@@ -12,8 +12,8 @@ class AutoTimer() : AutonomousBuilder() {
         wb = WheelbaseMecanumV1(P);
     }
     override fun moves(P: RobotPack) {
-        wb?.setAxisPower(0.0, 1.0, 0.0);
-        utils.delay(2500);
+        wb?.setAxisPower(0.0, .55, 0.0);
+        utils.delay(980);
         wb?.setAxisPower(0.0, 0.0, 0.0);
         utils.delay(1000);
     }

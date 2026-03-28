@@ -33,7 +33,10 @@ class ShooterController(P: RobotPack): ProgramComponent(P) {
     }
 
     fun setAngle(angle: Double) {
-        sht.setAnglePos(UsefulFuncs.arduinoLikeMap(angle, ConfigShooterController.servoDownAngle, ConfigShooterController.servoUpAngle, ConfigShooterController.servoDownPos, ConfigShooterController.servoUpPos))
+        sht.setAnglePos(
+            UsefulFuncs.arduinoLikeMap(angle, ConfigShooterController.servoDownAngle, ConfigShooterController.servoUpAngle, ConfigShooterController.servoDownPosL, ConfigShooterController.servoUpPosL),
+            UsefulFuncs.arduinoLikeMap(angle, ConfigShooterController.servoDownAngle, ConfigShooterController.servoUpAngle, ConfigShooterController.servoDownPosR, ConfigShooterController.servoUpPosR)
+        )
     }
 
     override fun tick() {

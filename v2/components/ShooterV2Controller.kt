@@ -17,7 +17,7 @@ class ShooterV2Controller(P: RobotPack): ProgramComponent(P) {
         set(value) { field=value; }
     var stop = true;
 
-    var control = true;
+    var control = false;
 
     var vel = 0.0;
     var velTs: Long = System.currentTimeMillis();

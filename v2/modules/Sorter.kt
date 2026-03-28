@@ -7,20 +7,21 @@ import org.firstinspires.ftc.teamcode.modules.sort.versions.SortSingleAndServosV
 import org.firstinspires.ftc.teamcode.v2.components.util.UsefulFuncs
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.Module
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
+import kotlin.math.abs
 
 class Sorter(P: RobotPack) : Module(P) {
     val SRT = P.hwmp.get(DcMotor::class.java, "SRT");
-
-    val BTN_SRT = P.hwmp.get(DigitalChannel::class.java, "BTN_SRT");
 
     val HLD_GRB_L = P.hwmp.get(Servo::class.java, "HLD_GRB_L");
     val HLD_GRB_R = P.hwmp.get(Servo::class.java, "HLD_GRB_R");
     val HLD_SHT   = P.hwmp.get(Servo::class.java, "HLD_SHT");
 
-    val grb_l_closed = 0.5;
-    val grb_r_closed = 0.5;
+    val btn = P.hwmp.get(DigitalChannel::class.java, "srt");
+
+    val grb_l_closed = 0.2;
+    val grb_r_closed = 0.0;
     val grb_l_opened = 0.0;
-    val grb_r_opened = 0.0;
+    val grb_r_opened = 0.2;
 
     val sht_closed = 0.0;
     val sht_opened = 0.2;
@@ -28,19 +29,21 @@ class Sorter(P: RobotPack) : Module(P) {
     init {
         SRT.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE;
         SRT.mode = DcMotor.RunMode.RUN_USING_ENCODER;
-        BTN_SRT.mode = DigitalChannel.Mode.INPUT;
+
+        btn.mode = DigitalChannel.Mode.INPUT;
     }
 
     fun setSrtPower(pw: Double) {
-        SRT.power = UsefulFuncs.absSign(pw, 1.0) * kSRT;
-    }
-
-    fun getBtnState(): Boolean {
-        return BTN_SRT.state;
+        //SRT.power = abs(UsefulFuncs.absSign(pw, 1.0) * kSRT)
+        SRT.power = UsefulFuncs.absSign(pw, .8);
     }
 
     fun getSrtTicks(): Int {
         return SRT.currentPosition;
+    }
+
+    fun getBtnState(): Boolean {
+        return btn.state;
     }
 
     fun closeGrab() { HLD_GRB_L.position = grb_l_closed; HLD_GRB_R.position = grb_r_closed; }

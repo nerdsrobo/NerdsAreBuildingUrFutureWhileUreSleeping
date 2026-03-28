@@ -13,6 +13,7 @@ class UsefulFuncs {
             val valOut = arrayListOf<Double>()
             var valSum = .0;
             for ( v in values ) { valSum += abs(v); }
+            if ( valSum <= maxVal ) { return values; }
             for ( v in values ) { valOut.add((abs(v) * maxVal / valSum)*sign(v)); }
             return valOut;
         }

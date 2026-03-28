@@ -54,6 +54,7 @@ class HogRider(P: RobotPack): ProgramSystem(P) {
 
     fun setupAngle(startAngle: Double) {
         angle = startAngle;
+        targetAngle = startAngle;
         angleSponsor.angleOffset = -startAngle;
     }
 

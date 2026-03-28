@@ -12,7 +12,7 @@ class Wheelbase(P: RobotPack) : Module(P) {
     val LB = P.hwmp.get(DcMotor::class.java, "LB")
     val RB = P.hwmp.get(DcMotor::class.java, "RB")
     val LF = P.hwmp.get(DcMotor::class.java, "LF")
-    val RF = P.hwmp.get(DcMotor::class.java, "RB")
+    val RF = P.hwmp.get(DcMotor::class.java, "RF")
 
     val YAencMotor = RB;
     val YBencMotor = LF;
@@ -26,9 +26,9 @@ class Wheelbase(P: RobotPack) : Module(P) {
         RF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
         notEncMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
-        YAencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
-        YBencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
-        XencMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER;
+        YAencMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+        YBencMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+        XencMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
     }
 
     fun setMtPower(pwLB: Double, pwRB: Double, pwLF: Double, pwRF: Double) {
@@ -45,12 +45,15 @@ class Wheelbase(P: RobotPack) : Module(P) {
     }
 
     fun setAxisPower(pwX: Double, pwY: Double, pwRot: Double) {
-        setMtPower(
-            LB_CLOCKWISE * (pwX - pwY - pwRot),
-            RB_CLOCKWISE * (pwX + pwY - pwRot),
-            LF_CLOCKWISE * (-pwX - pwY - pwRot),
-            RF_CLOCKWISE * (-pwX + pwY -pwRot)
+        val powers = doubleArrayOf(
+            LB_CLOCKWISE * (pwX - pwY + pwRot),
+            RB_CLOCKWISE * (pwX + pwY + pwRot),
+            LF_CLOCKWISE * (-pwX - pwY + pwRot),
+            RF_CLOCKWISE * (-pwX + pwY + pwRot)
         )
+        val maxAbs = powers.maxOf { kotlin.math.abs(it) }
+        val scale = if (maxAbs > 1.0) 1.0 / maxAbs else 1.0
+        setMtPower(powers[0] * scale, powers[1] * scale, powers[2] * scale, powers[3] * scale)
     }
 
     class OdometryPhies(val YA: Int, val YB: Int, val X: Int) {}

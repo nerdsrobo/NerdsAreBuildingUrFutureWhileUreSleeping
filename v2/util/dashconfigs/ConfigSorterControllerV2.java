@@ -9,9 +9,7 @@ public class ConfigSorterControllerV2 {
     public static int SIXSEVEN = 25;
     public static int positiveShootTicks = 180;
     public static int negativeShootTicks = -300;
-    public static double runToSwitchPw = .4765432142;
-    //public static int SrtControlTicksPerSlot = 480;
-    //public static int SrtControlChangeDaModeTicks = -180;
+    public static int ticksPerSlot = 480;
     public static double kSrt = -.4;
 
 }

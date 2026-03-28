@@ -2,19 +2,18 @@ package org.firstinspires.ftc.teamcode.v2.scenes.teleop.test.module
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.v2.modules.Shooter
 import org.firstinspires.ftc.teamcode.v2.modules.ShooterV2
 import org.firstinspires.ftc.teamcode.v2.modules.superclasses.RobotPack
 import org.firstinspires.ftc.teamcode.v2.scenes.superclasses.TeleOpPacker
 import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigShooterController
 import org.firstinspires.ftc.teamcode.v2.util.dashconfigs.ConfigShooterV2
 
-@TeleOp(name = "MODULE - Shooter", group = "module")
-class ModuleShooter(): TeleOpPacker() {
+@TeleOp(name = "MODULE - ShooterV2", group = "module")
+class ModuleShooterV2(): TeleOpPacker() {
     override fun init_(P: RobotPack) {
         val Pdash = RobotPack(P.LOP, P.hwmp, FtcDashboard.getInstance().telemetry, gamepad1, gamepad2, linkerApi, alliance);
 
-        val sht = Shooter(Pdash);
+        val sht = ShooterV2(Pdash);
 
         linkerApi.bindDouble({true}, {!gamepad1.y && !gamepad1.a}, {gamepad1.left_stick_y.toDouble()}, {pw -> sht.SHT.power = pw});
         linkerApi.bindVoid({true}, {gamepad1.y}, {sht.setShtPower(1.0)});

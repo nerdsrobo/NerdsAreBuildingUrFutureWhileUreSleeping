@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.v2.components.util
 
-import org.firstinspires.ftc.teamcode.v2.components.ColorDetectorMedian
 import org.opencv.core.Mat
 import org.opencv.core.Point
 import org.opencv.core.Scalar

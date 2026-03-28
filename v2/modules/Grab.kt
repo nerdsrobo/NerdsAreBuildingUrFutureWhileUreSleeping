@@ -15,6 +15,6 @@ class Grab(P: RobotPack) : Module(P) {
     val kGrb = 1.0;
 
     fun setGrbPower(pw: Double) {
-        GRB.power = pw * kGrb;
+        GRB.power = pw * -kGrb;
     }
 }
